@@ -1,6 +1,11 @@
 package com.example.recipeapp.repository;
 
-import com.example.recipeapp.model.*;
+import com.example.recipeapp.model.CategoryType;
+import com.example.recipeapp.model.Ingredient;
+import com.example.recipeapp.model.IngredientAmount;
+import com.example.recipeapp.model.Nutrition;
+import com.example.recipeapp.model.Recipe;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
