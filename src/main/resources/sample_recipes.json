@@ -1,0 +1,166 @@
+[
+  {
+    "id": 1,
+    "name": "チキンカレー",
+    "description": "スパイスの香りが食欲をそそる定番カレー。",
+    "servings": 2,
+    "cookingTimeMin": 45,
+    "ingredients": [
+      {
+        "name": "鶏もも肉",
+        "amount": { "value": 300, "unit": "g", "raw": "300g" }
+      },
+      {
+        "name": "玉ねぎ",
+        "amount": { "value": 1, "unit": "個", "raw": "1個" }
+      },
+      {
+        "name": "カレーパウダー",
+        "amount": { "value": 2, "unit": "大さじ", "raw": "大さじ2" }
+      }
+    ],
+    "steps": [
+      "鶏肉を食べやすい大きさに切る。",
+      "玉ねぎを炒め、鶏肉を加えてさらに炒める。",
+      "カレーパウダーと水を加えて20分ほど煮込む。"
+    ],
+    "categories": ["MAIN"],
+    "nutrition": {
+      "calories": 620,
+      "protein": 36,
+      "fat": 22,
+      "carbs": 48
+    }
+  },
+  {
+    "id": 2,
+    "name": "フレッシュサラダ",
+    "description": "シャキシャキ野菜のシンプルなサラダ。",
+    "servings": 1,
+    "cookingTimeMin": 10,
+    "ingredients": [
+      {
+        "name": "レタス",
+        "amount": { "value": null, "unit": null, "raw": "1/2玉" }
+      },
+      {
+        "name": "トマト",
+        "amount": { "value": 1, "unit": "個", "raw": "1個" }
+      },
+      {
+        "name": "オリーブオイル",
+        "amount": { "value": 1, "unit": "大さじ", "raw": "大さじ1" }
+      }
+    ],
+    "steps": [
+      "レタスを一口大にちぎる。",
+      "トマトを食べやすい大きさに切る。",
+      "オリーブオイルをかけて混ぜる。"
+    ],
+    "categories": ["SIDE"],
+    "nutrition": {
+      "calories": 180,
+      "protein": 3,
+      "fat": 14,
+      "carbs": 10
+    }
+  },
+  {
+    "id": 3,
+    "name": "和風パスタ",
+    "description": "しょうゆベースのあっさりしたパスタ。",
+    "servings": 1,
+    "cookingTimeMin": 20,
+    "ingredients": [
+      {
+        "name": "パスタ",
+        "amount": { "value": 100, "unit": "g", "raw": "100g" }
+      },
+      {
+        "name": "しょうゆ",
+        "amount": { "value": 1, "unit": "大さじ", "raw": "大さじ1" }
+      },
+      {
+        "name": "ベーコン",
+        "amount": { "value": 30, "unit": "g", "raw": "30g" }
+      }
+    ],
+    "steps": [
+      "パスタを茹でる。",
+      "ベーコンを炒める。",
+      "パスタとしょうゆを加えて炒め合わせる。"
+    ],
+    "categories": ["MAIN"],
+    "nutrition": {
+      "calories": 530,
+      "protein": 18,
+      "fat": 16,
+      "carbs": 72
+    }
+  },
+  {
+    "id": 4,
+    "name": "味噌汁",
+    "description": "だしの風味が優しい味噌汁。",
+    "servings": 2,
+    "cookingTimeMin": 15,
+    "ingredients": [
+      {
+        "name": "豆腐",
+        "amount": { "value": 150, "unit": "g", "raw": "150g" }
+      },
+      {
+        "name": "味噌",
+        "amount": { "value": 2, "unit": "大さじ", "raw": "大さじ2" }
+      },
+      {
+        "name": "だし汁",
+        "amount": { "value": 400, "unit": "ml", "raw": "400ml" }
+      }
+    ],
+    "steps": [
+      "だし汁を温める。",
+      "豆腐を加えて煮る。",
+      "味噌を溶かし、沸騰直前で火を止める。"
+    ],
+    "categories": ["SOUP"],
+    "nutrition": {
+      "calories": 120,
+      "protein": 10,
+      "fat": 5,
+      "carbs": 12
+    }
+  },
+  {
+    "id": 5,
+    "name": "バナナスムージー",
+    "description": "朝食にぴったりの栄養満点スムージー。",
+    "servings": 1,
+    "cookingTimeMin": 5,
+    "ingredients": [
+      {
+        "name": "バナナ",
+        "amount": { "value": 1, "unit": "本", "raw": "1本" }
+      },
+      {
+        "name": "牛乳",
+        "amount": { "value": 200, "unit": "ml", "raw": "200ml" }
+      },
+      {
+        "name": "はちみつ",
+        "amount": { "value": 1, "unit": "大さじ", "raw": "大さじ1" }
+      }
+    ],
+    "steps": [
+      "材料をすべてミキサーに入れる。",
+      "なめらかになるまで撹拌する。"
+    ],
+    "categories": ["DRINK"],
+    "nutrition": {
+      "calories": 260,
+      "protein": 7,
+      "fat": 4,
+      "carbs": 52
+    }
+  }
+]
