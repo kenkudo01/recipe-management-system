@@ -2,6 +2,7 @@ package com.example.recipeapp.app;
 
 import com.example.recipeapp.model.Recipe;
 import com.example.recipeapp.repository.RecipeLoader;
+import com.example.recipeapp.util.KnapsackSolver;
 import com.example.recipeapp.util.RecipeSorter;
 
 import java.util.List;
@@ -43,9 +44,34 @@ public class Main {
              System.out.println("最小カロリー: " + sorted.get(0).getNutrition().getCalories());
 
 
+            System.out.println("=== Knapsack ===");
+            KnapsackSolver.Result res = KnapsackSolver.solve(recipes, 700, 45);
+
+            System.out.println("最適なレシピID: " + res.selectedIds);
+
+            for (int id : res.selectedIds) {
+                Recipe r = findById(recipes, id);
+                if (r != null) {
+                    System.out.println("名前: " + r.getName());
+                }
+            }
+
+            System.out.println("合計タンパク質: " + res.totalProtein);
+
+
         } catch (Exception e) {
             System.out.println("エラー発生: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+    private static Recipe findById(List<Recipe> recipes, int id) {
+        for (Recipe r : recipes) {
+            if (r.getId() == id) {
+                return r;
+            }
+        }
+        return null;
+    }
+
 }
