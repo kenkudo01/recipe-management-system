@@ -2,6 +2,7 @@ package com.example.recipeapp.app;
 
 import com.example.recipeapp.model.Recipe;
 import com.example.recipeapp.repository.RecipeLoader;
+import com.example.recipeapp.util.RecipeSorter;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Main {
 
             // 動作確認として最初のレシピを表示
             if (!recipes.isEmpty()) {
-                Recipe first = recipes.get(0);
+                Recipe first = recipes.get(2);
                 System.out.println("--- 最初のレシピ情報 ---");
                 System.out.println("ID: " + first.getId());
                 System.out.println("名前: " + first.getName());
@@ -28,6 +29,19 @@ public class Main {
                 System.out.println("調理時間: " + first.getCookingTimeMin() + "分");
                 System.out.println("材料数: " + first.getIngredients().size());
             }
+
+
+            System.out.println("=== SORT ===");
+
+             List<Recipe> sorted = RecipeSorter.sort(
+                 recipes,
+                 RecipeSorter.SortKey.CALORIES,
+                 true
+             );
+
+             System.out.println("名前: " + sorted.get(0).getName());
+             System.out.println("最小カロリー: " + sorted.get(0).getNutrition().getCalories());
+
 
         } catch (Exception e) {
             System.out.println("エラー発生: " + e.getMessage());
