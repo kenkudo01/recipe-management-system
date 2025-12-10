@@ -61,8 +61,15 @@ public class MenuController {
 
     // --- ここから先は Step2 以降で実装 ---
     private void searchByName() {
-        System.out.println("[検索] 未実装です（Step2）");
+        System.out.print("検索ワードを入力してください: ");
+        String keyword = scanner.nextLine().trim();
+
+        List<Recipe> result = com.example.recipeapp.util.RecipeSearcher.searchByName(recipes, keyword);
+
+        System.out.println("\n=== 検索結果 ===");
+        RecipePrinter.printList(result);
     }
+
 
     private void filterByCategory() {
         System.out.println("[カテゴリ絞り込み] 未実装です（Step3）");
