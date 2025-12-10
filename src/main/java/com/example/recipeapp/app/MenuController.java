@@ -2,6 +2,8 @@ package com.example.recipeapp.app;
 
 import com.example.recipeapp.model.CategoryType;
 import com.example.recipeapp.model.Recipe;
+import com.example.recipeapp.util.RecipeSorter;
+
 import java.util.List;
 import java.util.Scanner;
 
@@ -99,8 +101,49 @@ public class MenuController {
 
 
     private void sortMenu() {
-        System.out.println("[ソート] 未実装です（Step4）");
+        System.out.println("\n=== ソートメニュー ===");
+        System.out.println("1. ID");
+        System.out.println("2. 名前");
+        System.out.println("3. カロリー");
+        System.out.println("4. 調理時間");
+
+        System.out.print("ソートキーを選択してください: ");
+        String keyInput = scanner.nextLine().trim();
+
+        RecipeSorter.SortKey key;
+
+        switch (keyInput) {
+            case "1": key = RecipeSorter.SortKey.ID; break;
+            case "2": key = RecipeSorter.SortKey.NAME; break;
+            case "3": key = RecipeSorter.SortKey.CALORIES; break;
+            case "4": key = RecipeSorter.SortKey.COOKING_TIME; break;
+            default:
+                System.out.println("無効な入力です。メニューに戻ります。");
+                return;
+        }
+
+        System.out.println("1. 昇順");
+        System.out.println("2. 降順");
+        System.out.print("並び順を選択してください: ");
+        String orderInput = scanner.nextLine().trim();
+
+        boolean asc;
+
+        switch (orderInput) {
+            case "1": asc = true; break;
+            case "2": asc = false; break;
+            default:
+                System.out.println("無効な入力です。メニューに戻ります。");
+                return;
+        }
+
+        // ソート処理
+        List<Recipe> sorted = RecipeSorter.sort(recipes, key, asc);
+
+        System.out.println("\n=== ソート結果 ===");
+        RecipePrinter.printList(sorted);
     }
+
 
     private void suggestMenu() {
         System.out.println("[献立提案] 未実装です（Step5）");
