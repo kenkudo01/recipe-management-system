@@ -1,5 +1,6 @@
 package com.example.recipeapp.app;
 
+import com.example.recipeapp.model.CategoryType;
 import com.example.recipeapp.model.Recipe;
 import java.util.List;
 import java.util.Scanner;
@@ -72,8 +73,30 @@ public class MenuController {
 
 
     private void filterByCategory() {
-        System.out.println("[カテゴリ絞り込み] 未実装です（Step3）");
+        System.out.println("\n=== カテゴリ一覧 ===");
+        for (CategoryType type : CategoryType.values()) {
+            System.out.println("- " + type);
+        }
+
+        System.out.print("カテゴリ名を入力してください: ");
+        String input = scanner.nextLine().trim().toUpperCase();
+
+        CategoryType category = null;
+
+        try {
+            category = CategoryType.valueOf(input);
+        } catch (Exception e) {
+            System.out.println("無効なカテゴリ名です。再度選択してください。");
+            return;
+        }
+
+        // フィルタ処理
+        List<Recipe> filtered = com.example.recipeapp.util.RecipeFilter.filterByCategory(recipes, category);
+
+        System.out.println("\n=== フィルタ結果 ===");
+        RecipePrinter.printList(filtered);
     }
+
 
     private void sortMenu() {
         System.out.println("[ソート] 未実装です（Step4）");
