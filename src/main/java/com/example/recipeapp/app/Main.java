@@ -34,14 +34,14 @@ public class Main {
 
             System.out.println("=== SORT ===");
 
-             List<Recipe> sorted = RecipeSorter.sort(
+            List<Recipe> sorted = RecipeSorter.sort(
                  recipes,
                  RecipeSorter.SortKey.CALORIES,
                  true
-             );
+            );
 
-             System.out.println("名前: " + sorted.get(0).getName());
-             System.out.println("最小カロリー: " + sorted.get(0).getNutrition().getCalories());
+            System.out.println("名前: " + sorted.get(0).getName());
+            System.out.println("最小カロリー: " + sorted.get(0).getNutrition().getCalories());
 
 
             System.out.println("=== Knapsack ===");

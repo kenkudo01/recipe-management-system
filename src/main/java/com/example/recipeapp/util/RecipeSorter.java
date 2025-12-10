@@ -53,7 +53,7 @@ public class RecipeSorter {
         return list;
     }
 
-    private static int compare(Recipe a, Recipe b, SortKey key) {
+    static int compare(Recipe a, Recipe b, SortKey key) {
         switch (key) {
             case ID:
                 return Integer.compare(a.getId(), b.getId());
