@@ -2,6 +2,7 @@ package com.example.recipeapp.app;
 
 import com.example.recipeapp.model.CategoryType;
 import com.example.recipeapp.model.Recipe;
+import com.example.recipeapp.util.KnapsackSolver;
 import com.example.recipeapp.util.RecipeSorter;
 
 import java.util.List;
@@ -146,6 +147,40 @@ public class MenuController {
 
 
     private void suggestMenu() {
-        System.out.println("[献立提案] 未実装です（Step5）");
+        try {
+            System.out.print("カロリー上限を入力してください: ");
+            int maxCal = Integer.parseInt(scanner.nextLine().trim());
+
+            System.out.print("調理時間上限を入力してください: ");
+            int maxTime = Integer.parseInt(scanner.nextLine().trim());
+
+            System.out.println("\n計算中...");
+
+            KnapsackSolver.Result result =
+                    com.example.recipeapp.util.KnapsackSolver.solve(recipes, maxCal, maxTime);
+
+            System.out.println("\n=== 献立提案 ===");
+
+            if (result.selectedIds.isEmpty()) {
+                System.out.println("条件に合う献立は見つかりませんでした。");
+                return;
+            }
+
+            // 選ばれた ID のレシピを表示
+            for (Integer id : result.selectedIds) {
+                recipes.stream()
+                        .filter(r -> r.getId() == id)
+                        .findFirst()
+                        .ifPresent(r -> RecipePrinter.printList(List.of(r)));
+            }
+
+            System.out.println("合計タンパク質: " + result.totalProtein + "g");
+
+        } catch (NumberFormatException e) {
+            System.out.println("数字を入力してください。メニューに戻ります。");
+        } catch (Exception e) {
+            System.out.println("予期しないエラー: " + e.getMessage());
+        }
     }
+
 }
