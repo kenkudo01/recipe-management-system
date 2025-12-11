@@ -61,7 +61,9 @@ public class MenuController {
     private void showAllRecipes() {
         System.out.println("\n=== レシピ一覧 ===");
         RecipePrinter.printList(recipes);
+        pause();
     }
+
 
     // --- ここから先は Step2 以降で実装 ---
     private void searchByName() {
@@ -76,29 +78,40 @@ public class MenuController {
 
 
     private void filterByCategory() {
-        System.out.println("\n=== カテゴリ一覧 ===");
-        for (CategoryType type : CategoryType.values()) {
-            System.out.println("- " + type);
-        }
+        System.out.println("\n=== カテゴリ絞り込み ===");
+        System.out.println("カテゴリ一覧:");
 
-        System.out.print("カテゴリ名を入力してください: ");
+        for (CategoryType type : CategoryType.values()) {
+            System.out.println(" - " + type);
+        }
+        System.out.println("0. 戻る");
+
+        System.out.print("カテゴリ名（または 0）を入力してください: ");
         String input = scanner.nextLine().trim().toUpperCase();
 
-        CategoryType category = null;
-
-        try {
-            category = CategoryType.valueOf(input);
-        } catch (Exception e) {
-            System.out.println("無効なカテゴリ名です。再度選択してください。");
+        if (input.equals("0")) {
+            System.out.println("メニューに戻ります。");
+            pause();
             return;
         }
 
-        // フィルタ処理
-        List<Recipe> filtered = com.example.recipeapp.util.RecipeFilter.filterByCategory(recipes, category);
+        CategoryType category;
+        try {
+            category = CategoryType.valueOf(input);
+        } catch (Exception e) {
+            System.out.println("無効なカテゴリ名です。");
+            pause();
+            return;
+        }
 
-        System.out.println("\n=== フィルタ結果 ===");
+        List<Recipe> filtered =
+                com.example.recipeapp.util.RecipeFilter.filterByCategory(recipes, category);
+
+        System.out.println("\n=== 絞り込み結果 ===");
         RecipePrinter.printList(filtered);
+        pause();
     }
+
 
 
     private void sortMenu() {
@@ -107,54 +120,73 @@ public class MenuController {
         System.out.println("2. 名前");
         System.out.println("3. カロリー");
         System.out.println("4. 調理時間");
+        System.out.println("0. 戻る");
 
         System.out.print("ソートキーを選択してください: ");
         String keyInput = scanner.nextLine().trim();
 
-        RecipeSorter.SortKey key;
+        if (keyInput.equals("0")) {
+            pause();
+            return;
+        }
 
+        RecipeSorter.SortKey key;
         switch (keyInput) {
             case "1": key = RecipeSorter.SortKey.ID; break;
             case "2": key = RecipeSorter.SortKey.NAME; break;
             case "3": key = RecipeSorter.SortKey.CALORIES; break;
             case "4": key = RecipeSorter.SortKey.COOKING_TIME; break;
             default:
-                System.out.println("無効な入力です。メニューに戻ります。");
+                System.out.println("無効な入力です。");
+                pause();
                 return;
         }
 
         System.out.println("1. 昇順");
         System.out.println("2. 降順");
+        System.out.println("0. 戻る");
         System.out.print("並び順を選択してください: ");
+
         String orderInput = scanner.nextLine().trim();
 
-        boolean asc;
+        if (orderInput.equals("0")) {
+            pause();
+            return;
+        }
 
+        boolean asc;
         switch (orderInput) {
             case "1": asc = true; break;
             case "2": asc = false; break;
             default:
-                System.out.println("無効な入力です。メニューに戻ります。");
+                System.out.println("無効な入力です。");
+                pause();
                 return;
         }
 
-        // ソート処理
         List<Recipe> sorted = RecipeSorter.sort(recipes, key, asc);
 
         System.out.println("\n=== ソート結果 ===");
         RecipePrinter.printList(sorted);
+        pause();
     }
 
 
+
     private void suggestMenu() {
+        System.out.println("\n=== 献立提案（ナップサック） ===");
+        System.out.println("0 を入力するとキャンセルします。");
+
         try {
             System.out.print("カロリー上限を入力してください: ");
-            int maxCal = Integer.parseInt(scanner.nextLine().trim());
+            String calInput = scanner.nextLine().trim();
+            if (calInput.equals("0")) { pause(); return; }
+            int maxCal = Integer.parseInt(calInput);
 
             System.out.print("調理時間上限を入力してください: ");
-            int maxTime = Integer.parseInt(scanner.nextLine().trim());
-
-            System.out.println("\n計算中...");
+            String timeInput = scanner.nextLine().trim();
+            if (timeInput.equals("0")) { pause(); return; }
+            int maxTime = Integer.parseInt(timeInput);
 
             KnapsackSolver.Result result =
                     com.example.recipeapp.util.KnapsackSolver.solve(recipes, maxCal, maxTime);
@@ -163,10 +195,10 @@ public class MenuController {
 
             if (result.selectedIds.isEmpty()) {
                 System.out.println("条件に合う献立は見つかりませんでした。");
+                pause();
                 return;
             }
 
-            // 選ばれた ID のレシピを表示
             for (Integer id : result.selectedIds) {
                 recipes.stream()
                         .filter(r -> r.getId() == id)
@@ -174,13 +206,20 @@ public class MenuController {
                         .ifPresent(r -> RecipePrinter.printList(List.of(r)));
             }
 
-            System.out.println("合計タンパク質: " + result.totalProtein + "g");
+            System.out.println("\n合計タンパク質: " + result.totalProtein + "g\n");
 
         } catch (NumberFormatException e) {
-            System.out.println("数字を入力してください。メニューに戻ります。");
-        } catch (Exception e) {
-            System.out.println("予期しないエラー: " + e.getMessage());
+            System.out.println("数字を入力してください。");
         }
+
+        pause();
     }
+
+
+    private void pause() {
+        System.out.println("\nEnter を押してメニューに戻ります...");
+        scanner.nextLine();
+    }
+
 
 }
