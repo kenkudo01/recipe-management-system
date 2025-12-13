@@ -6,6 +6,7 @@ import com.example.recipeapp.model.Recipe;
 import com.example.recipeapp.ui.ChatAnimator;
 import javafx.application.Platform;
 import javafx.collections.*;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -91,17 +92,49 @@ public class RecipeDetailController {
 
 
     private void askLLM(PromptType type) {
+
+        // ===============================
+        // LLM呼び出しは時間がかかるため、
+        // JavaFXのUIスレッドをブロックしないよう
+        // Task（バックグラウンド処理）で実行する
+        // ===============================
+        Task<String> task = new Task<>() {
+
+            // バックグラウンドスレッドで実行される処理
+            // （ここではUI操作をしてはいけない）
+            @Override
+            protected String call() {
+                return LlmService.ask(type, recipe);
+            }
+        };
+
+        // ===============================
+        // Task が正常終了したときに呼ばれる
+        // この処理は JavaFX Application Thread 上で実行される
+        // ===============================
+        task.setOnSucceeded(e -> {
+
+            // 「考え中…」アニメーションを停止
+            chatAnimator.stopThinking();
+
+            // LLMの回答を1文字ずつ表示するアニメーションを開始
+            chatAnimator.showTyping(task.getValue());
+        });
+
+        // ===============================
+        // LLM処理開始前に「考え中…」表示を開始
+        // （UIスレッド上で安全に実行される）
+        // ===============================
         chatAnimator.startThinking();
 
-        new Thread(() -> {
-            String answer = LlmService.ask(type, recipe);
-
-            Platform.runLater(() -> {
-                chatAnimator.stopThinking();
-                chatAnimator.showTyping(answer);
-            });
-        }).start();
+        // ===============================
+        // Taskを別スレッドで実行
+        // （new Thread(...) しないと処理が始まらない）
+        // ===============================
+        new Thread(task).start();
     }
+
+
 
 
 

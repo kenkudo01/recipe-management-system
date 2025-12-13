@@ -2,6 +2,9 @@ package com.example.recipeapp.llm;
 
 import com.example.recipeapp.model.Recipe;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class PromptBuilder {
 
     // --- Base system prompt ---
@@ -45,9 +48,35 @@ State clearly whether it is possible or not.
     }
 
     private static String buildUserPrompt(Recipe recipe, PromptType type) {
+
+        String ingredients = recipe.getIngredients().stream()
+                .map(i -> "- " + i.getName() + "（" + i.getAmount().getRaw() + "）")
+                .collect(Collectors.joining("\n"));
+
+        String steps = IntStream.range(0, recipe.getSteps().size())
+                .mapToObj(i -> (i + 1) + ". " + recipe.getSteps().get(i))
+                .collect(Collectors.joining("\n"));
+
         return """
-料理名: %s
-説明: %s
-""".formatted(recipe.getName(), recipe.getDescription());
+            以下は家庭料理のレシピです。
+            
+            【料理名】
+            %s
+            
+            【料理の概要】
+            %s
+            
+            【材料】
+            %s
+            
+            【調理手順】
+            %s
+            """.formatted(
+                            recipe.getName(),
+                            recipe.getDescription(),
+                            ingredients,
+                            steps
+        );
     }
+
 }

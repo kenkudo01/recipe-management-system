@@ -1,71 +1,118 @@
 package com.example.recipeapp.llm;
 
-/**
- * LLM (Ollama) configuration parameters.
- * These values control model behavior at inference time.
- */
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class LlmConfig {
 
-    /** Ollama chat API endpoint (localhost) */
-    public static final String ENDPOINT =
+    private static final String SETTINGS_PATH =
+            "/setting/settings.json";
+
+
+    private static final Gson gson =
+            new GsonBuilder().setPrettyPrinting().create();
+
+    private static final Path CONFIG_DIR =
+            Paths.get(System.getProperty("user.home"), ".recipeapp");
+
+    private static final Path CONFIG_FILE =
+            CONFIG_DIR.resolve("llm-config.json");
+
+    // ===== デフォルト値 =====
+    private static String endpoint =
             "http://localhost:11434/api/chat";
+    private static String model = "llama3.2:latest";
+    private static double temperature = 0.3;
+    private static double topP = 0.9;
+    private static double repeatPenalty = 1.1;
+    private static int maxTokens = 512;
 
-    /** Model name installed in Ollama */
-    public static final String MODEL = "lla";
+    // ===== getter =====
+    public static String getEndpoint() {
+        return endpoint;
+    }
 
-    /**
-     * Sampling temperature.
-     * Controls randomness / creativity of the output.
-     *
-     * Low (0.1–0.3): deterministic, stable, practical
-     * Medium (0.4–0.6): balanced
-     * High (0.7+): creative, less predictable
-     */
-    public static final double TEMPERATURE = 0.3;
+    public static String getModel() {
+        return model;
+    }
 
-    /**
-     * Top-p (nucleus sampling).
-     * Limits token selection to a cumulative probability mass.
-     *
-     * Typical range: 0.7 – 1.0
-     * Lower values make output more conservative.
-     */
-    public static final double TOP_P = 0.9;
+    public static double getTemperature() {
+        return temperature;
+    }
+    public static double getTopP() {
+        return topP;
+    }
 
-    /**
-     * Repetition penalty.
-     * Penalizes repeating the same tokens or phrases.
-     *
-     * 1.0  : no penalty (default)
-     * 1.05–1.2 : slight repetition suppression (recommended)
-     * 1.5+ : strong suppression (may hurt fluency)
-     */
-    public static final double REPEAT_PENALTY = 1.1;
+    public static double getRepeatPenalty() {
+        return repeatPenalty;
+    }
 
-    /**
-     * Maximum number of tokens in the generated response.
-     * Acts as a safety limit to prevent overly long outputs.
-     */
-    public static final int MAX_TOKENS = 200;
+    public static int getMaxTokens() {
+        return maxTokens;
+    }
 
-    // ----------------------------------------------------
-    // Optional / advanced parameters (not always needed)
-    // ----------------------------------------------------
+    // ===== setter =====
+    public static void setEndpoint(String value) {
+        endpoint = value;
+    }
 
-    /**
-     * Whether to use streaming responses.
-     *
-     * true  : tokens are sent incrementally (harder to handle)
-     * false : response is returned all at once (recommended for GUI apps)
-     */
-    // public static final boolean STREAM = false;
+    public static void setModel(String value) {
+        model = value;
+    }
 
-    /**
-     * Stop sequences.
-     * Generation will stop when any of these strings appear.
-     *
-     * Useful for strict output control, but often unnecessary.
-     */
-    // public static final String[] STOP = { "\n\n\n" };
+    public static void setTemperature(double value) {
+        temperature = value;
+    }
+
+    public static void setTopP(double value) {
+        topP = value;
+    }
+
+    public static void setRepeatPenalty(double value) {
+        repeatPenalty = value;
+    }
+
+    public static void setMaxTokens(int value) {
+        maxTokens = value;
+    }
+
+    // ===== load =====
+    public static void load() {
+        try (InputStream in =
+                     LlmConfig.class.getResourceAsStream(SETTINGS_PATH)) {
+
+            if (in == null) {
+                System.err.println("settings.json not found in resources");
+                return;
+            }
+
+            Gson gson = new Gson();
+            try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
+                LlmConfigData data = gson.fromJson(reader, LlmConfigData.class);
+                endpoint = data.endpoint;
+                model = data.model;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // ===== save =====
+    public static void save() {
+        System.out.println(
+                "[INFO] settings.json is loaded from resources. Save is disabled (temporary)."
+        );
+    }
 
 }

@@ -32,17 +32,17 @@ public class LlmClient {
           ]
         }
         """.formatted(
-                    LlmConfig.MODEL,
-                    LlmConfig.TEMPERATURE,
-                    LlmConfig.TOP_P,
-                    LlmConfig.REPEAT_PENALTY,
-                    LlmConfig.MAX_TOKENS,
+                    LlmConfig.getModel(),
+                    LlmConfig.getTemperature(),
+                    LlmConfig.getTopP(),
+                    LlmConfig.getRepeatPenalty(),
+                    LlmConfig.getMaxTokens(),
                     escape(systemPrompt),
                     escape(userPrompt)
             );
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(LlmConfig.ENDPOINT))
+                    .uri(URI.create(LlmConfig.getEndpoint()))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           stylesheets="@/css/recipe-setting.css"
+           fx:controller="com.example.recipeapp.controller.LlmSettingController"
+           styleClass="settings-root">
+
+    <!-- 中央カード -->
+    <VBox spacing="16"
+          alignment="TOP_LEFT"
+          maxWidth="420"
+          styleClass="settings-card">
+
+        <!-- タイトル -->
+        <Label text="⚙ LLM 設定"
+               styleClass="settings-title"/>
+
+        <Separator/>
+
+        <!-- Endpoint -->
+        <VBox spacing="4">
+            <Label text="Endpoint"/>
+            <TextField fx:id="endpointField"
+                       prefWidth="380"/>
+        </VBox>
+
+        <!-- Model -->
+        <VBox spacing="4">
+            <Label text="Model"/>
+            <TextField fx:id="modelField"
+                       prefWidth="380"/>
+        </VBox>
+
+        <!-- Validation -->
+        <Label fx:id="validationLabel"
+               text="未実装"
+               styleClass="validation-label"/>
+
+        <!-- Buttons -->
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="キャンセル" onAction="#onClose"/>
+            <Button text="検証" onAction="#onValidate"/>
+            <Button text="保存"
+                    defaultButton="true"
+                    onAction="#onSave"/>
+        </HBox>
+
+
+    </VBox>
+
+</StackPane>

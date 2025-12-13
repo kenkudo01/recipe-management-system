@@ -26,7 +26,7 @@ public class LlmValidator {
                 return ValidationResult.SERVER_UNAVAILABLE;
             }
 
-            if (!response.body().contains("\"name\":\"" + LlmConfig.MODEL + "\"")) {
+            if (!response.body().contains("\"name\":\"" + LlmConfig.getModel() + "\"")) {
                 return ValidationResult.MODEL_NOT_FOUND;
             }
 

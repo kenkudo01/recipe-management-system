@@ -5,12 +5,15 @@ import com.example.recipeapp.repository.RecipeLoader;
 import com.example.recipeapp.util.RecipeSorter;
 import com.example.recipeapp.view.RecipeCard;
 import javafx.collections.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -33,6 +36,7 @@ public class MainViewController {
     @FXML private ListView<String> ingredientList;
 
     private List<Recipe> allRecipes = new ArrayList<>();
+    private ContextMenu menu;
 
     @FXML
     public void initialize() {
@@ -67,6 +71,11 @@ public class MainViewController {
         sortKeyCombo.valueProperty().addListener((obs, oldV, newV) -> updateView());
         sortOrderCombo.valueProperty().addListener((obs, oldV, newV) -> updateView());
 
+        MenuItem settingsItem = new MenuItem("⚙ 設定");
+        settingsItem.setOnAction(e -> openSettings());
+
+        MenuItem about = new MenuItem("ℹ アプリ情報");
+        menu = new ContextMenu(settingsItem, about);
 
         // 初回表示
         updateView();
@@ -133,6 +142,35 @@ public class MainViewController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void openSettings() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource(
+                            "/com/example/recipeapp/view/LlmSettingsView.fxml"
+                    )
+            );
+
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("LLM 設定");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+    @FXML
+    private void onOpenMenu(ActionEvent event) {
+        Button btn = (Button) event.getSource();
+        menu.show(btn, Side.BOTTOM, 0, 0);
     }
 
 

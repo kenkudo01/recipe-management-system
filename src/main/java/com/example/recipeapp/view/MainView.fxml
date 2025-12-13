@@ -8,32 +8,57 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.recipeapp.controller.MainViewController">
 
-    <!-- 🔹 Top: Filter / Sort Bar -->
+    <!-- ===== Top ===== -->
     <top>
         <VBox spacing="8">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
 
-            <!-- Search -->
-            <HBox spacing="10">
-                <Label text="Search:"/>
-                <TextField fx:id="searchField" promptText="レシピ名を検索"/>
+            <!-- ===== グローバルヘッダー ===== -->
+            <HBox spacing="10" alignment="CENTER_LEFT"
+                  styleClass="main-header">
+                <padding>
+                    <Insets top="8" right="12" bottom="8" left="12"/>
+                </padding>
+
+                <Label text="Recipe App"
+                       styleClass="app-title"/>
+
+                <!-- 右寄せ -->
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- ハンバーガーメニュー -->
+                <Button text="☰"
+                        styleClass="menu-button"
+                        onAction="#onOpenMenu"/>
             </HBox>
 
-            <!-- Category & Sort -->
-            <HBox spacing="10">
-                <Label text="Category:"/>
-                <ComboBox fx:id="categoryCombo"/>
+            <!-- ===== 検索・フィルタ ===== -->
+            <VBox spacing="8">
+                <padding>
+                    <Insets top="6" right="10" bottom="10" left="10"/>
+                </padding>
 
-                <Label text="Sort:"/>
-                <ComboBox fx:id="sortKeyCombo"/>
-                <ComboBox fx:id="sortOrderCombo"/>
-            </HBox>
+                <!-- Search -->
+                <HBox spacing="10">
+                    <Label text="Search:"/>
+                    <TextField fx:id="searchField"
+                               promptText="レシピ名を検索"/>
+                </HBox>
+
+                <!-- Category & Sort -->
+                <HBox spacing="10">
+                    <Label text="Category:"/>
+                    <ComboBox fx:id="categoryCombo"/>
+
+                    <Label text="Sort:"/>
+                    <ComboBox fx:id="sortKeyCombo"/>
+                    <ComboBox fx:id="sortOrderCombo"/>
+                </HBox>
+            </VBox>
+
         </VBox>
     </top>
 
-    <!-- 🔹 Center: Recipe Cards -->
+    <!-- ===== Center ===== -->
     <center>
         <ScrollPane fx:id="scrollPane" fitToWidth="true">
             <FlowPane fx:id="flowPane"
@@ -45,6 +70,5 @@
             </FlowPane>
         </ScrollPane>
     </center>
-
 
 </BorderPane>

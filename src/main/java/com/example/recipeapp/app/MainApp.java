@@ -1,5 +1,6 @@
 package com.example.recipeapp.app;
 
+import com.example.recipeapp.llm.LlmConfig;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,6 +12,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        LlmConfig.load();
+
         FXMLLoader loader = new FXMLLoader(
                 getClass().getResource("/com/example/recipeapp/view/MainView.fxml")
         );
