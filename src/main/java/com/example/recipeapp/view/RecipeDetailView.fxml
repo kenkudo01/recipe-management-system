@@ -3,8 +3,7 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.image.ImageView?>
 
-<BorderPane styleClass="border-pane"
-            xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             stylesheets="@/css/recipe-detail.css"
             fx:controller="com.example.recipeapp.controller.RecipeDetailController">
@@ -23,53 +22,85 @@
 
     <!-- ===== メイン ===== -->
     <center>
-        <ScrollPane fitToWidth="true">
-            <VBox spacing="25">
+        <SplitPane dividerPositions="0.7">
+
+            <!-- ===== 左：レシピ詳細 ===== -->
+            <ScrollPane fitToWidth="true">
+                <VBox spacing="25">
+                    <padding>
+                        <Insets top="20" right="20" bottom="20" left="20"/>
+                    </padding>
+
+                    <!-- 写真 + 説明 + 材料 -->
+                    <HBox spacing="20" styleClass="card">
+                        <ImageView fx:id="imageView"
+                                   fitWidth="260"
+                                   preserveRatio="true"/>
+
+                        <VBox spacing="12">
+                            <Label fx:id="descriptionLabel"
+                                   wrapText="true"
+                                   styleClass="description-text"/>
+
+                            <Label text="材料" styleClass="section-title"/>
+                            <ListView fx:id="ingredientList"
+                                      prefHeight="160"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- 手順 -->
+                    <VBox spacing="10" styleClass="card">
+                        <Label text="手順" styleClass="section-title"/>
+                        <ListView fx:id="stepList"/>
+                    </VBox>
+
+                    <!-- 栄養情報 -->
+                    <VBox spacing="8" styleClass="card nutrition-box">
+                        <Label text="栄養情報" styleClass="section-title"/>
+                        <HBox spacing="20">
+                            <Label fx:id="calorieLabel"/>
+                            <Label fx:id="proteinLabel"/>
+                            <Label fx:id="fatLabel"/>
+                            <Label fx:id="carbLabel"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </ScrollPane>
+
+            <!-- ===== 右：AIサイドパネル ===== -->
+            <VBox spacing="12" styleClass="ai-panel">
                 <padding>
-                    <Insets top="20" right="20" bottom="20" left="20"/>
+                    <Insets top="12" right="12" bottom="12" left="12"/>
                 </padding>
 
-                <!-- ================= 写真 + 説明 + 材料 ================= -->
-                <HBox spacing="20" styleClass="card">
+                <Label text="🤖 AIサポート" styleClass="section-title"/>
+                <Label text="このレシピについて質問できます"
+                       styleClass="ai-subtitle"/>
 
-                    <!-- 左：写真 -->
-                    <ImageView fx:id="imageView"
-                               fitWidth="260"
-                               preserveRatio="true"/>
+                <VBox spacing="8">
+                    <Button text="材料が足りないけど作れる？"
+                            onAction="#onAskMissing"/>
 
-                    <!-- 右：説明 + 材料 -->
-                    <VBox spacing="12">
-                        <Label fx:id="descriptionLabel"
-                               wrapText="true"
-                               styleClass="description-text"/>
+                    <Button text="代わりに使える物は？"
+                            onAction="#onAskSubstitute"/>
 
-                        <Label text="材料"
-                               styleClass="section-title"/>
+                    <Button text="合う一品は？"
+                            onAction="#onAskSideDish"/>
 
-                        <ListView fx:id="ingredientList"
-                                  prefHeight="160"/>
-                    </VBox>
-                </HBox>
+                    <Button text="失敗しやすいポイントは？"
+                            onAction="#onAskPitfall"/>
 
-                <!-- ================= 手順 ================= -->
-                <VBox spacing="10" styleClass="card">
-                    <Label text="手順" styleClass="section-title"/>
-                    <ListView fx:id="stepList"/>
                 </VBox>
 
-                <!-- ================= 栄養情報 ================= -->
-                <VBox spacing="8" styleClass="card nutrition-box">
-                    <Label text="栄養情報" styleClass="section-title"/>
-                    <HBox spacing="20">
-                        <Label fx:id="calorieLabel"/>
-                        <Label fx:id="proteinLabel"/>
-                        <Label fx:id="fatLabel"/>
-                        <Label fx:id="carbLabel"/>
-                    </HBox>
-                </VBox>
+                <Separator/>
 
+                <TextArea fx:id="llmResultArea"
+                          editable="false"
+                          wrapText="true"
+                          prefHeight="300"/>
             </VBox>
-        </ScrollPane>
+
+        </SplitPane>
     </center>
 
 </BorderPane>

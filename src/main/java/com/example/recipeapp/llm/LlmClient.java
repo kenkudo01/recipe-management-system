@@ -55,7 +55,8 @@ public class LlmClient {
     // JSON文字列用エスケープ（最低限）
     private static String escape(String s) {
         return s.replace("\\", "\\\\")
-                .replace("\"", "\\\"");
+                .replace("\"", "\\\"")
+                .replace("\n", "\\n");
     }
 
     // OllamaのJSONから content だけ抜く（簡易）
