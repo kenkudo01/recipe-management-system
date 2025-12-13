@@ -1,7 +1,6 @@
 package com.example.recipeapp.controller;
 
-import com.example.recipeapp.llm.LlmService;
-import com.example.recipeapp.llm.PromptType;
+import com.example.recipeapp.llm.*;
 import com.example.recipeapp.model.Ingredient;
 import com.example.recipeapp.model.Recipe;
 import com.example.recipeapp.ui.ChatAnimator;
@@ -13,7 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
-import com.example.recipeapp.llm.LlmClient;
+
+import static com.example.recipeapp.llm.ValidationResult.SERVER_UNAVAILABLE;
 
 public class RecipeDetailController {
 
@@ -32,11 +32,28 @@ public class RecipeDetailController {
 
     private Recipe recipe;
     private ChatAnimator chatAnimator;
+    private boolean llmAvailable = true;
     private Stage stage;
 
     @FXML
     public void initialize(){
         chatAnimator = new ChatAnimator(llmResultArea);
+
+        ValidationResult result = LlmValidator.validate();
+
+        if (result != ValidationResult.OK) {
+            llmAvailable = false;
+
+            String message = switch (result) {
+                case MODEL_NOT_FOUND ->
+                        "⚠ 指定されたAIモデルが見つかりません。\n設定を確認してください。";
+                case SERVER_UNAVAILABLE ->
+                        "⚠ Ollamaに接続できません。\n起動しているか確認してください。";
+                default -> "⚠ AIが利用できません。";
+            };
+
+            llmResultArea.setText(message);
+        }
     }
 
     public void setRecipe(Recipe recipe) {

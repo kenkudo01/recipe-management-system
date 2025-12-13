@@ -53,7 +53,7 @@ public class LlmClient {
             return extractContent(response.body());
 
         } catch (Exception e) {
-            return "⚠ LLMに接続できませんでした。\nOllamaが起動しているか確認してください。";
+            return "⚠ AIに接続できませんでした。\nローカルLLMが起動しているか確認してください。";
         }
     }
 

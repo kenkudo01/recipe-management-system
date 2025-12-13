@@ -11,7 +11,7 @@ public class LlmConfig {
             "http://localhost:11434/api/chat";
 
     /** Model name installed in Ollama */
-    public static final String MODEL = "llama3.2";
+    public static final String MODEL = "lla";
 
     /**
      * Sampling temperature.
