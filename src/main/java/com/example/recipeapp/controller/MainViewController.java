@@ -18,6 +18,11 @@ import java.util.stream.Collectors;
 
 public class MainViewController {
 
+    private static final double DETAIL_WIDTH = 1200;
+    private static final double DETAIL_HEIGHT = 600;
+
+
+
     @FXML private TextField searchField;
     @FXML private ComboBox<CategoryType> categoryCombo;
     @FXML private ComboBox<RecipeSorter.SortKey> sortKeyCombo;
@@ -104,17 +109,6 @@ public class MainViewController {
 
     }
 
-    private void showDetail(Recipe recipe) {
-        ingredientList.getItems().clear();
-        for (Ingredient ing : recipe.getIngredients()) {
-            ingredientList.getItems().add(
-                    ing.getName() + " : " +
-                            ing.getAmount().getValue() + " " +
-                            ing.getAmount().getUnit()
-            );
-        }
-    }
-
 
     private void openDetail(Recipe recipe) {
         try {
@@ -131,7 +125,7 @@ public class MainViewController {
 
             Stage stage = new Stage();
             stage.setTitle(recipe.getName());
-            stage.setScene(new Scene(root, 600, 600));
+            stage.setScene(new Scene(root, DETAIL_WIDTH, DETAIL_HEIGHT));
 
             controller.setStage(stage);
             stage.show();

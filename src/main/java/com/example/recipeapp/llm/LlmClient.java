@@ -10,31 +10,36 @@ import com.google.gson.JsonParser;
 
 public class LlmClient {
 
+
+
     private static final HttpClient client =
             HttpClient.newHttpClient();
 
-    public static String ask(String prompt) {
+    public static String ask(String systemPrompt, String userPrompt){
         try {
-            String json = """
-            {
-              "model": "%s",
-              "stream": false,
-              "messages": [
-                {
-                  "role": "system",
-                  "content": "You are a cooking assistant for home cooking. Answer in natural Japanese. Use only common ingredients. Avoid store-bought products unless necessary. Explain briefly and practically."
-                },
-                {
-                  "role": "user",
-                  "content": "%s"
-                }
-              ]
-            }
-            """.formatted(
-                                LlmConfig.MODEL,
-                                escape(prompt)
-                        );
 
+            String json = """
+        {
+          "model": "%s",
+          "stream": false,
+          "temperature": %s,
+          "top_p": %s,
+          "repeat_penalty": %s,
+          "max_tokens": %d,
+          "messages": [
+            { "role": "system", "content": "%s" },
+            { "role": "user",   "content": "%s" }
+          ]
+        }
+        """.formatted(
+                    LlmConfig.MODEL,
+                    LlmConfig.TEMPERATURE,
+                    LlmConfig.TOP_P,
+                    LlmConfig.REPEAT_PENALTY,
+                    LlmConfig.MAX_TOKENS,
+                    escape(systemPrompt),
+                    escape(userPrompt)
+            );
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(LlmConfig.ENDPOINT))
@@ -52,11 +57,13 @@ public class LlmClient {
         }
     }
 
+
     // JSON文字列用エスケープ（最低限）
     private static String escape(String s) {
         return s.replace("\\", "\\\\")
                 .replace("\"", "\\\"")
-                .replace("\n", "\\n");
+                .replace("\n", "\\n")
+                .replace("\\\\", "\\");
     }
 
     // OllamaのJSONから content だけ抜く（簡易）

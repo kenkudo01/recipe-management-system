@@ -171,8 +171,6 @@ public class MenuController {
         pause();
     }
 
-
-
     private void suggestMenu() {
         System.out.println("\n=== 献立提案（ナップサック） ===");
         System.out.println("0 を入力するとキャンセルします。");
