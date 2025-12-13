@@ -4,6 +4,9 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 
 public class LlmClient {
 
@@ -15,15 +18,23 @@ public class LlmClient {
             String json = """
             {
               "model": "%s",
+              "stream": false,
               "messages": [
-                { "role": "system", "content": "You are a cooking assistant. Be concise and practical." },
-                { "role": "user", "content": "%s" }
+                {
+                  "role": "system",
+                  "content": "You are a cooking assistant for home cooking. Answer in natural Japanese. Use only common ingredients. Avoid store-bought products unless necessary. Explain briefly and practically."
+                },
+                {
+                  "role": "user",
+                  "content": "%s"
+                }
               ]
             }
             """.formatted(
-                    LlmConfig.MODEL,
-                    escape(prompt)
-            );
+                                LlmConfig.MODEL,
+                                escape(prompt)
+                        );
+
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(LlmConfig.ENDPOINT))
@@ -54,6 +65,11 @@ public class LlmClient {
 
         int start = idx + 11;
         int end = json.indexOf("\"", start);
-        return json.substring(start, end);
+
+        return json.substring(start, end)
+                .replace("\\n", "\n");
     }
+
+
+
 }

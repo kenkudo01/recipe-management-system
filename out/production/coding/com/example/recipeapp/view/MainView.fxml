@@ -33,6 +33,26 @@
         </VBox>
     </top>
 
+    <VBox spacing="10" styleClass="card">
+        <Label text="🤔 料理で困ったら" styleClass="section-title"/>
+
+        <HBox spacing="10">
+            <Button text="材料が足りないけど作れる？"/>
+            <Button text="代わりに使える物は？"/>
+        </HBox>
+
+        <HBox spacing="10">
+            <Button text="合う一品は？"/>
+            <Button text="失敗しやすいポイントは？"/>
+        </HBox>
+
+        <TextArea fx:id="llmResultArea"
+                  editable="false"
+                  wrapText="true"
+                  prefHeight="180"/>
+    </VBox>
+
+
     <!-- 🔹 Center: Recipe Cards -->
     <center>
         <ScrollPane fx:id="scrollPane" fitToWidth="true">
