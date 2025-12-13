@@ -1,0 +1,75 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.ImageView?>
+
+<BorderPane styleClass="border-pane"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@/css/recipe-detail.css"
+            fx:controller="com.example.recipeapp.controller.RecipeDetailController">
+
+    <!-- ===== ヘッダー ===== -->
+    <top>
+        <HBox spacing="10" styleClass="detail-header">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <Button text="← 戻る" onAction="#onBack"/>
+            <Label fx:id="titleLabel" styleClass="detail-title"/>
+        </HBox>
+    </top>
+
+    <!-- ===== メイン ===== -->
+    <center>
+        <ScrollPane fitToWidth="true">
+            <VBox spacing="25">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+
+                <!-- ================= 写真 + 説明 + 材料 ================= -->
+                <HBox spacing="20" styleClass="card">
+
+                    <!-- 左：写真 -->
+                    <ImageView fx:id="imageView"
+                               fitWidth="260"
+                               preserveRatio="true"/>
+
+                    <!-- 右：説明 + 材料 -->
+                    <VBox spacing="12">
+                        <Label fx:id="descriptionLabel"
+                               wrapText="true"
+                               styleClass="description-text"/>
+
+                        <Label text="材料"
+                               styleClass="section-title"/>
+
+                        <ListView fx:id="ingredientList"
+                                  prefHeight="160"/>
+                    </VBox>
+                </HBox>
+
+                <!-- ================= 手順 ================= -->
+                <VBox spacing="10" styleClass="card">
+                    <Label text="手順" styleClass="section-title"/>
+                    <ListView fx:id="stepList"/>
+                </VBox>
+
+                <!-- ================= 栄養情報 ================= -->
+                <VBox spacing="8" styleClass="card nutrition-box">
+                    <Label text="栄養情報" styleClass="section-title"/>
+                    <HBox spacing="20">
+                        <Label fx:id="calorieLabel"/>
+                        <Label fx:id="proteinLabel"/>
+                        <Label fx:id="fatLabel"/>
+                        <Label fx:id="carbLabel"/>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>

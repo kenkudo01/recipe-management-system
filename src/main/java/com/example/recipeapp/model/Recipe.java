@@ -16,6 +16,8 @@ public class Recipe {
 
     private Nutrition nutrition;
 
+    private String imageUrl;
+
     public Recipe() {
         // mutable なので空のコンストラクタを許可
     }
@@ -23,7 +25,7 @@ public class Recipe {
     public Recipe(int id, String name, String description,
                   int servings, int cookingTimeMin,
                   List<Ingredient> ingredients, List<String> steps,
-                  List<CategoryType> categories, Nutrition nutrition) {
+                  List<CategoryType> categories, Nutrition nutrition, String imageUrl) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -33,6 +35,7 @@ public class Recipe {
         this.steps = steps;
         this.categories = categories;
         this.nutrition = nutrition;
+        this.imageUrl = imageUrl;
     }
 
     // ===== GETTER / SETTER =====
@@ -62,4 +65,7 @@ public class Recipe {
 
     public Nutrition getNutrition() { return nutrition; }
     public void setNutrition(Nutrition nutrition) { this.nutrition = nutrition; }
+
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imagePath) { this.imageUrl = imagePath; }
 }

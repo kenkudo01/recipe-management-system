@@ -23,9 +23,19 @@ public class RecipeLoader {
         Reader reader = new FileReader(path);
 
         Type recipeListType = new TypeToken<List<Recipe>>(){}.getType();
-        List<Recipe> recipes = gson.fromJson(reader, recipeListType);
+        //List<Recipe> recipes = gson.fromJson(reader, recipeListType);
+        List<Recipe> list = gson.fromJson(reader, recipeListType);
 
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i) == null) {
+                System.out.println("WARNING: RecipeLoader found null at index " + i);
+                continue;
+            }
+            System.out.println("Loaded Recipe " + i +" : " + list.get(i).getName());
+        }
         reader.close();
-        return recipes;
+        return list;
+//        reader.close();
+//        return recipes;
     }
 }

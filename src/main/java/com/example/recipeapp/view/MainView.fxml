@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.recipeapp.controller.MainViewController">
+
+    <!-- 🔹 Top: Filter / Sort Bar -->
+    <top>
+        <VBox spacing="8">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+
+            <!-- Search -->
+            <HBox spacing="10">
+                <Label text="Search:"/>
+                <TextField fx:id="searchField" promptText="レシピ名を検索"/>
+            </HBox>
+
+            <!-- Category & Sort -->
+            <HBox spacing="10">
+                <Label text="Category:"/>
+                <ComboBox fx:id="categoryCombo"/>
+
+                <Label text="Sort:"/>
+                <ComboBox fx:id="sortKeyCombo"/>
+                <ComboBox fx:id="sortOrderCombo"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- 🔹 Center: Recipe Cards -->
+    <center>
+        <ScrollPane fx:id="scrollPane" fitToWidth="true">
+            <FlowPane fx:id="flowPane"
+                      hgap="20"
+                      vgap="20">
+                <padding>
+                    <Insets top="10" right="10" bottom="10" left="10"/>
+                </padding>
+            </FlowPane>
+        </ScrollPane>
+    </center>
+
+
+</BorderPane>
