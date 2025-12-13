@@ -6,11 +6,12 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@/css/main.css"
             fx:controller="com.example.recipeapp.controller.MainViewController">
 
     <!-- ===== Top ===== -->
     <top>
-        <VBox spacing="8">
+        <VBox spacing="8" focusTraversable="false">
 
             <!-- ===== グローバルヘッダー ===== -->
             <HBox spacing="10" alignment="CENTER_LEFT"

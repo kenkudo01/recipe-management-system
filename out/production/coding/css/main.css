@@ -1,0 +1,64 @@
+/* ===== 全体 ===== */
+.root {
+    -fx-font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+    -fx-background-color: #f6f7f9;
+}
+
+/* ===== グローバルヘッダー ===== */
+.main-header {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* アプリタイトル */
+.app-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+/* ハンバーガーボタン */
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-font-size: 18px;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 6;
+}
+
+/* ===== 検索・フィルタエリア ===== */
+.top VBox {
+    -fx-background-color: #fafafa;
+}
+
+/* Label 共通 */
+.label {
+    -fx-text-fill: #333333;
+}
+
+/* TextField */
+.text-field {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #d0d0d0;
+}
+
+/* ComboBox */
+.combo-box {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+
+/* ===== レシピ一覧エリア ===== */
+/*
+.scroll-pane {
+    -fx-background: transparent;
+}
+
+.flow-pane {
+    -fx-background-color: transparent;
+}
+*/

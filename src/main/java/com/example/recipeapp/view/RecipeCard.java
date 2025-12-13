@@ -72,6 +72,9 @@ public class RecipeCard extends VBox {
                         recipe.getCookingTimeMin()
                         + " min"
         );
+
+        setFocusTraversable(false);
+
     }
 
     // ===== Step 2: Layout =====
