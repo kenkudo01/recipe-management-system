@@ -9,16 +9,25 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-import java.io.File;
 import java.net.URL;
 
+/**
+ * レシピ一覧画面で使用するカード型 UI コンポーネント。
+ *
+ * レシピの画像・名前・基本情報を表示し、
+ * クリック可能な View として利用される。
+ */
 public class RecipeCard extends VBox {
+
+    // ===== Layout constants =====
 
     private static final double CARD_PADDING = 12;
     private static final double CARD_SPACING = 8;
 
     private static final double IMAGE_WIDTH = 160;
     private static final double IMAGE_HEIGHT = 110;
+
+    // ===== Style constants =====
 
     private static final String CARD_STYLE =
             "-fx-background-color: #ffffff;" +
@@ -28,15 +37,20 @@ public class RecipeCard extends VBox {
     private static final String TITLE_STYLE =
             "-fx-font-weight: bold; -fx-font-size: 14px;";
 
+    /** 表示対象のレシピ */
     private final Recipe recipe;
 
-    // UI Components
+    // ===== UI Components =====
     private ImageView imageView;
     private Rectangle placeholder;
     private Label titleLabel;
     private Label infoLabel;
 
-    // ====== Constructor ======
+    /**
+     * 指定されたレシピ情報をもとにカード UI を生成する。
+     *
+     * @param recipe 表示対象のレシピ
+     */
     public RecipeCard(Recipe recipe) {
         this.recipe = recipe;
 
@@ -62,19 +76,17 @@ public class RecipeCard extends VBox {
             placeholder.setFill(Color.LIGHTGRAY);
         }
 
-
         // ---- Title ----
         titleLabel = new Label(recipe.getName());
 
-        // ---- Info ----
+        // ---- Info (calories / cooking time) ----
         infoLabel = new Label(
                 recipe.getNutrition().getCalories() + " kcal / " +
-                        recipe.getCookingTimeMin()
-                        + " min"
+                        recipe.getCookingTimeMin() + " min"
         );
 
+        // フォーカス枠を表示しない（カード UI 用）
         setFocusTraversable(false);
-
     }
 
     // ===== Step 2: Layout =====
@@ -96,31 +108,40 @@ public class RecipeCard extends VBox {
         setStyle(CARD_STYLE);
         titleLabel.setStyle(TITLE_STYLE);
     }
+
+    /**
+     * 画像パスから Image を読み込む。
+     * 読み込めない場合は null を返し、プレースホルダー表示とする。
+     */
     private Image loadImage(String path) {
         try {
             if (path == null || path.isBlank()) {
-                System.out.println("Image path is null: using placeholder");
                 return null;
             }
 
             URL url = getClass().getResource("/" + path);
             if (url == null) {
-                System.out.println("Image not found: " + path);
                 return null;
             }
 
-            return new Image(url.toString(), IMAGE_WIDTH, IMAGE_HEIGHT, false, true);
+            return new Image(
+                    url.toString(),
+                    IMAGE_WIDTH,
+                    IMAGE_HEIGHT,
+                    false,
+                    true
+            );
 
         } catch (Exception e) {
-            e.printStackTrace();
             return null;
         }
     }
 
-
-
+    /**
+     * このカードに紐づくレシピを返す。
+     * クリック時の詳細画面遷移などで使用する。
+     */
     public Recipe getRecipe() {
         return recipe;
     }
-
 }
