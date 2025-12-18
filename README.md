@@ -125,7 +125,7 @@ java `
 
 ---
 
-＃＃データ構造の設計理由
+## データ構造の設計理由
 本システムは、家庭料理レシピを管理・閲覧するためのデスクトップアプリケーションである。
 レシピ情報の表示、検索、並び替えに加え、LLM を用いた補助提案機能を備えている。
 データ構造は MVC をベースとし、将来的な機能拡張を見据えて責務分離を重視して設計した。
@@ -147,7 +147,7 @@ LLM 利用不可時のフォールバックにも柔軟に対応できる構造�
 
 ---
 
-##AI利用について
+## AI利用について
 
 使用ＬＬＭ；ChatGPT
 本プロジェクトでは以下の目的で AI（ChatGPT）を利用しました：
@@ -166,6 +166,7 @@ LLM 利用不可時のフォールバックにも柔軟に対応できる構造�
 <img width="1242" height="422" alt="image" src="https://github.com/user-attachments/assets/ec225bd2-08f5-42ea-ba04-d433890c5abe" />
 
 <img width="1190" height="400" alt="image" src="https://github.com/user-attachments/assets/3d82dc55-24a6-47a4-9acc-45c7c6dc31a2" />
+
 
 
 
