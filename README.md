@@ -149,7 +149,6 @@ LLM 利用不可時のフォールバックにも柔軟に対応できる構造�
 
 ## AI利用について
 
-使用ＬＬＭ；ChatGPT
 本プロジェクトでは以下の目的で AI（ChatGPT）を利用しました：
 
 - データ構造設計の検討補助  
@@ -166,6 +165,7 @@ LLM 利用不可時のフォールバックにも柔軟に対応できる構造�
 <img width="1242" height="422" alt="image" src="https://github.com/user-attachments/assets/ec225bd2-08f5-42ea-ba04-d433890c5abe" />
 
 <img width="1190" height="400" alt="image" src="https://github.com/user-attachments/assets/3d82dc55-24a6-47a4-9acc-45c7c6dc31a2" />
+
 
 
 
