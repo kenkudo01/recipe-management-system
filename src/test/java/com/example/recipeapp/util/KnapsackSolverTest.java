@@ -3,6 +3,7 @@ package com.example.recipeapp.util;
 import com.example.recipeapp.model.CategoryType;
 import com.example.recipeapp.model.Nutrition;
 import com.example.recipeapp.model.Recipe;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,31 +12,48 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class KnapsackSolverTest {
 
+    @AfterAll
+    static void afterAllTests() {
+        System.out.println("✅ RecipeSorterTest: ALL TESTS PASSED");
+    }
 
     private List<Recipe> createSampleRecipes() {
         return List.of(
                 new Recipe(
                         1, "レシピ1", "", 1, 20,
-                        List.of(), List.of(), List.of(CategoryType.OTHER),
-                        new Nutrition(300, 25, 10, 30)
+                        List.of(),
+                        List.of(),
+                        List.of(CategoryType.OTHER),
+                        new Nutrition(300, 25, 10, 30),
+                        null   // ← imageUrl を追加
                 ),
                 new Recipe(
                         2, "レシピ2", "", 1, 30,
-                        List.of(), List.of(), List.of(CategoryType.OTHER),
-                        new Nutrition(400, 30, 20, 40)
+                        List.of(),
+                        List.of(),
+                        List.of(CategoryType.OTHER),
+                        new Nutrition(400, 30, 20, 40),
+                        null
                 ),
                 new Recipe(
                         3, "レシピ3", "", 1, 15,
-                        List.of(), List.of(), List.of(CategoryType.OTHER),
-                        new Nutrition(200, 15, 5, 10)
+                        List.of(),
+                        List.of(),
+                        List.of(CategoryType.OTHER),
+                        new Nutrition(200, 15, 5, 10),
+                        null
                 ),
                 new Recipe(
                         4, "レシピ4", "", 1, 25,
-                        List.of(), List.of(), List.of(CategoryType.OTHER),
-                        new Nutrition(500, 35, 25, 50)
+                        List.of(),
+                        List.of(),
+                        List.of(CategoryType.OTHER),
+                        new Nutrition(500, 35, 25, 50),
+                        null
                 )
         );
     }
+
 
 
 

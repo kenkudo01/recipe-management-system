@@ -44,9 +44,7 @@ public class RecipeLoader {
                     );
                     continue;
                 }
-                System.out.println(
-                        "Loaded Recipe " + i + " : " + list.get(i).getName()
-                );
+
             }
 
             return list;

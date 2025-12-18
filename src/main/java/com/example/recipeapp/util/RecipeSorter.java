@@ -63,7 +63,7 @@ public class RecipeSorter {
      * 2つの Recipe を指定キーで比較する。
      * sort() の内部利用を想定。
      */
-    private static int compare(Recipe a, Recipe b, SortKey key) {
+    public static int compare(Recipe a, Recipe b, SortKey key) {
         return switch (key) {
             case ID -> Integer.compare(a.getId(), b.getId());
             case NAME -> a.getName().compareTo(b.getName());

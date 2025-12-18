@@ -1,5 +1,6 @@
-package com.example.recipeapp.app;
+package com.example.recipeapp.controller;
 
+import com.example.recipeapp.app.RecipePrinter;
 import com.example.recipeapp.model.CategoryType;
 import com.example.recipeapp.model.Recipe;
 import com.example.recipeapp.util.KnapsackSolver;
