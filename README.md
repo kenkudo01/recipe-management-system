@@ -81,7 +81,8 @@ libs/
 ### Part 1・2（Java 実行）
 
 ```
-java -cp out/production/coding com.example.recipeapp.app.MainApp
+java -cp "out/production/coding;libs/gson-2.10.1.jar" com.example.recipeapp.app.Main
+
 ```
 
 ### part 3 アプリケーション
@@ -129,6 +130,7 @@ LLM 利用不可時のフォールバックにも柔軟に対応できる構造�
 - コード生成およびバグ修正のサポート  
 - READMEの文章生成  
 - Git 運用やブランチ戦略の最適化
+
 
 
 
