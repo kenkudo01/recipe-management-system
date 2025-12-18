@@ -1,5 +1,22 @@
 # Recipe Management System
 
+## 目次
+- [概要（Project Overview）](#概要project-overview)
+- [使用技術（Tech Stack）](#使用技術tech-stack)
+- [セットアップ要件について（Setup Requirements）](#セットアップ要件についてsetup-requirements)
+  - [Part 1・Part 2 のみを実行する場合](#part-1part-2-のみを実行する場合)
+  - [Part 3（GUI アプリケーション）を実行する場合](#part-3gui-アプリケーションを実行する場合)
+  - [Ollama について（Optional）](#ollama-についてoptional)
+- [ディレクトリ構成（Directory Structure）](#ディレクトリ構成directory-structure)
+- [実行方法（Execution）](#実行方法execution)
+  - [Part 1・2（Java 実行）](#part-12java-実行)
+  - [Part 3 アプリケーション](#part-3-アプリケーション)
+- [データ構造の設計理由](#データ構造の設計理由)
+- [AI利用について](#ai利用について)
+- [テスト結果](#テスト結果)
+
+
+
 ## 概要（Project Overview）
 本プロジェクトは、技術課題として実装した Java ベースのレシピ管理システムである。  
 レシピデータの読み込み、管理、ソート、最適化を行う機能を備えており、  
@@ -143,12 +160,13 @@ LLM 利用不可時のフォールバックにも柔軟に対応できる構造�
 
 
 ---
-##テスト結果
+## テスト結果
 
 ソート・ナップサック問題　テスト結果
 <img width="1242" height="422" alt="image" src="https://github.com/user-attachments/assets/ec225bd2-08f5-42ea-ba04-d433890c5abe" />
 
 <img width="1190" height="400" alt="image" src="https://github.com/user-attachments/assets/3d82dc55-24a6-47a4-9acc-45c7c6dc31a2" />
+
 
 
 
