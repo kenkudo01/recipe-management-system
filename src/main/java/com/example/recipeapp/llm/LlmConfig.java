@@ -10,8 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-
 public class LlmConfig {
+
+    // ===== Paths / Serializer =====
 
     private static final Path SETTINGS_PATH =
             Paths.get("settings", "settings.json");
@@ -19,13 +20,9 @@ public class LlmConfig {
     private static final Gson gson =
             new GsonBuilder().setPrettyPrinting().create();
 
-    private static final Path CONFIG_DIR =
-            Paths.get(System.getProperty("user.home"), ".recipeapp");
+    // ===== Default values =====
+    // 設定ファイルが無い場合に使用される初期値
 
-    private static final Path CONFIG_FILE =
-            CONFIG_DIR.resolve("llm-config.json");
-
-    // ===== デフォルト値 =====
     private static String endpoint =
             "http://localhost:11434/api/chat";
     private static String model = "llama3.2:latest";
@@ -35,62 +32,14 @@ public class LlmConfig {
     private static double repeatPenalty = 1.1;
     private static int maxTokens = 512;
 
+    // ===== Load / Save =====
 
-    // ===== getter =====
-    public static String getEndpoint() {
-        return endpoint;
-    }
-
-    public static String getModel() {
-        return model;
-    }
-
-    public static double getTemperature() {
-        return temperature;
-    }
-    public static double getTopP() {
-        return topP;
-    }
-
-    public static double getRepeatPenalty() {
-        return repeatPenalty;
-    }
-
-    public static int getMaxTokens() {
-        return maxTokens;
-    }
-
-    // ===== setter =====
-    public static void setEndpoint(String value) {
-        endpoint = value;
-    }
-
-    public static void setModel(String value) {
-        model = value;
-    }
-
-    public static void setTemperature(double value) {
-        temperature = value;
-    }
-
-    public static void setTopP(double value) {
-        topP = value;
-    }
-
-    public static void setRepeatPenalty(double value) {
-        repeatPenalty = value;
-    }
-
-    public static void setMaxTokens(int value) {
-        maxTokens = value;
-    }
-
-    // ===== load =====
+    /**
+     * 設定ファイルを読み込み、現在の設定に反映する。
+     * ファイルが存在しない場合はデフォルト値を使用する。
+     */
     public static void load() {
-
-
         if (!Files.exists(SETTINGS_PATH)) {
-            // 設定ファイルが無い場合はデフォルト値を使う
             return;
         }
 
@@ -105,26 +54,23 @@ public class LlmConfig {
             }
 
         } catch (Exception e) {
-            // 壊れていてもアプリは落とさない
+            // 設定が壊れていてもアプリは起動させる
             e.printStackTrace();
         }
     }
 
-
-
-    // ===== save =====
+    /**
+     * 現在の設定を JSON ファイルとして保存する。
+     */
     public static void save() {
         try {
-
             LlmConfigData data = new LlmConfigData(endpoint, model);
 
-            // settings/ ディレクトリが無ければ作成
             Path dir = SETTINGS_PATH.getParent();
             if (dir != null && !Files.exists(dir)) {
                 Files.createDirectories(dir);
             }
 
-            // JSON 書き込み（UTF-8 / 上書き）
             try (Writer writer = Files.newBufferedWriter(
                     SETTINGS_PATH,
                     StandardCharsets.UTF_8
@@ -132,14 +78,59 @@ public class LlmConfig {
                 gson.toJson(data, writer);
             }
 
-            System.out.println(
-                    "[INFO] LLM settings saved to " +
-                            SETTINGS_PATH.toAbsolutePath()
-            );
-
         } catch (IOException e) {
-            // 設定保存失敗でもアプリは落とさない
             System.err.println("[ERROR] Failed to save LLM settings");
         }
     }
+
+    // ===== Getter / Setter =====
+    // 設定値の取得・更新のみを行う
+
+    public static String getEndpoint() {
+        return endpoint;
     }
+
+    public static void setEndpoint(String value) {
+        endpoint = value;
+    }
+
+    public static String getModel() {
+        return model;
+    }
+
+    public static void setModel(String value) {
+        model = value;
+    }
+
+    public static double getTemperature() {
+        return temperature;
+    }
+
+    public static void setTemperature(double value) {
+        temperature = value;
+    }
+
+    public static double getTopP() {
+        return topP;
+    }
+
+    public static void setTopP(double value) {
+        topP = value;
+    }
+
+    public static double getRepeatPenalty() {
+        return repeatPenalty;
+    }
+
+    public static void setRepeatPenalty(double value) {
+        repeatPenalty = value;
+    }
+
+    public static int getMaxTokens() {
+        return maxTokens;
+    }
+
+    public static void setMaxTokens(int value) {
+        maxTokens = value;
+    }
+}
