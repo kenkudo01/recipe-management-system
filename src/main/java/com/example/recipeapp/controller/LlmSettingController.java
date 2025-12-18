@@ -25,14 +25,26 @@ public class LlmSettingController {
     // ===== 保存 =====
     @FXML
     private void onSave() {
-        LlmConfig.setEndpoint(endpointField.getText());
-        LlmConfig.setModel(modelField.getText());
+        // 入力値を一旦 Config に反映（検証用）
+        LlmConfig.setEndpoint(endpointField.getText().trim());
+        LlmConfig.setModel(modelField.getText().trim());
+
+        // 検証
+        ValidationResult result = LlmValidator.validate();
+        validationLabel.setText(toMessage(result));
+
+        // NGなら保存しない
+        if (result != ValidationResult.OK) {
+            return;
+        }
+
 
         LlmConfig.save();
 
         Stage stage = (Stage) endpointField.getScene().getWindow();
         stage.close();
     }
+
 
     // ===== 閉じる =====
     @FXML

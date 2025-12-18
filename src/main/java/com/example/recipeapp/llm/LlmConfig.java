@@ -3,20 +3,18 @@ package com.example.recipeapp.llm;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
+
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+
 public class LlmConfig {
 
-    private static final String SETTINGS_PATH =
-            "/setting/settings.json";
-
+    private static final Path SETTINGS_PATH =
+            Paths.get("settings", "settings.json");
 
     private static final Gson gson =
             new GsonBuilder().setPrettyPrinting().create();
@@ -31,10 +29,12 @@ public class LlmConfig {
     private static String endpoint =
             "http://localhost:11434/api/chat";
     private static String model = "llama3.2:latest";
+
     private static double temperature = 0.3;
     private static double topP = 0.9;
     private static double repeatPenalty = 1.1;
     private static int maxTokens = 512;
+
 
     // ===== getter =====
     public static String getEndpoint() {
@@ -87,32 +87,59 @@ public class LlmConfig {
 
     // ===== load =====
     public static void load() {
-        try (InputStream in =
-                     LlmConfig.class.getResourceAsStream(SETTINGS_PATH)) {
 
-            if (in == null) {
-                System.err.println("settings.json not found in resources");
-                return;
+
+        if (!Files.exists(SETTINGS_PATH)) {
+            // 設定ファイルが無い場合はデフォルト値を使う
+            return;
+        }
+
+        try (Reader reader = Files.newBufferedReader(SETTINGS_PATH)) {
+            LlmConfigData data = gson.fromJson(reader, LlmConfigData.class);
+
+            if (data.getEndpoint() != null && !data.getEndpoint().isBlank()) {
+                endpoint = data.getEndpoint();
+            }
+            if (data.getModel() != null && !data.getModel().isBlank()) {
+                model = data.getModel();
             }
 
-            Gson gson = new Gson();
-            try (Reader reader = new InputStreamReader(in, StandardCharsets.UTF_8)) {
-                LlmConfigData data = gson.fromJson(reader, LlmConfigData.class);
-                endpoint = data.endpoint;
-                model = data.model;
-            }
-
-        } catch (IOException e) {
+        } catch (Exception e) {
+            // 壊れていてもアプリは落とさない
             e.printStackTrace();
         }
     }
 
 
+
     // ===== save =====
     public static void save() {
-        System.out.println(
-                "[INFO] settings.json is loaded from resources. Save is disabled (temporary)."
-        );
-    }
+        try {
 
-}
+            LlmConfigData data = new LlmConfigData(endpoint, model);
+
+            // settings/ ディレクトリが無ければ作成
+            Path dir = SETTINGS_PATH.getParent();
+            if (dir != null && !Files.exists(dir)) {
+                Files.createDirectories(dir);
+            }
+
+            // JSON 書き込み（UTF-8 / 上書き）
+            try (Writer writer = Files.newBufferedWriter(
+                    SETTINGS_PATH,
+                    StandardCharsets.UTF_8
+            )) {
+                gson.toJson(data, writer);
+            }
+
+            System.out.println(
+                    "[INFO] LLM settings saved to " +
+                            SETTINGS_PATH.toAbsolutePath()
+            );
+
+        } catch (IOException e) {
+            // 設定保存失敗でもアプリは落とさない
+            System.err.println("[ERROR] Failed to save LLM settings");
+        }
+    }
+    }

@@ -74,8 +74,7 @@ public class MainViewController {
         MenuItem settingsItem = new MenuItem("⚙ 設定");
         settingsItem.setOnAction(e -> openSettings());
 
-        MenuItem about = new MenuItem("ℹ アプリ情報");
-        menu = new ContextMenu(settingsItem, about);
+        menu = new ContextMenu(settingsItem);
 
         // 初回表示
         updateView();
