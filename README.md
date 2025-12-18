@@ -95,11 +95,13 @@ java -cp "out/production/coding;libs/gson-2.10.1.jar" com.example.recipeapp.app.
 
 ### part 3 アプリケーション
 ```
+
 java `
   --module-path "C:\javafx-sdk-17.0.17\lib" `
   --add-modules javafx.controls,javafx.fxml `
-  -cp "out\production\coding" `
+  -cp "out\production\coding;libs\gson-2.10.1.jar" `
   com.example.recipeapp.app.MainApp
+
 ```
 
 ※上手くいかない時はjaavafxのmodule pathを確認してください
@@ -140,9 +142,13 @@ LLM 利用不可時のフォールバックにも柔軟に対応できる構造�
 - Git 運用やブランチ戦略の最適化
 
 
+---
+##テスト結果
 
+ソート・ナップサック問題　テスト結果
+<img width="1242" height="422" alt="image" src="https://github.com/user-attachments/assets/ec225bd2-08f5-42ea-ba04-d433890c5abe" />
 
-
+<img width="1190" height="400" alt="image" src="https://github.com/user-attachments/assets/3d82dc55-24a6-47a4-9acc-45c7c6dc31a2" />
 
 
 
