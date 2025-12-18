@@ -1,5 +1,6 @@
 package com.example.recipeapp.app;
 
+import com.example.recipeapp.controller.MenuController;
 import com.example.recipeapp.model.Recipe;
 import com.example.recipeapp.repository.RecipeLoader;
 

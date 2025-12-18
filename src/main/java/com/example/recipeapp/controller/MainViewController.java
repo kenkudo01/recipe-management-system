@@ -4,7 +4,7 @@ import com.example.recipeapp.model.*;
 import com.example.recipeapp.repository.RecipeLoader;
 import com.example.recipeapp.util.RecipeSorter;
 import com.example.recipeapp.view.RecipeCard;
-import javafx.collections.*;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,15 +16,22 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * メイン画面（レシピ一覧）のコントローラ。
+ *
+ * レシピの検索・カテゴリ絞り込み・ソートを制御し、
+ * 詳細画面や設定画面への遷移を管理する。
+ */
 public class MainViewController {
 
     private static final double DETAIL_WIDTH = 1200;
     private static final double DETAIL_HEIGHT = 600;
 
-
+    // ===== FXML components =====
 
     @FXML private TextField searchField;
     @FXML private ComboBox<CategoryType> categoryCombo;
@@ -35,58 +42,66 @@ public class MainViewController {
     @FXML private ScrollPane scrollPane;
     @FXML private ListView<String> ingredientList;
 
+    // ===== State =====
+
+    /** 読み込まれた全レシピ */
     private List<Recipe> allRecipes = new ArrayList<>();
+
+    /** 右上メニュー（設定） */
     private ContextMenu menu;
 
+    /**
+     * FXML 読み込み後に呼ばれる初期化処理。
+     * レシピ読み込み、UI 初期設定、イベント登録を行う。
+     */
     @FXML
     public void initialize() {
 
-        // ---- Load Recipes ----
+        // ---- Load recipes ----
         try {
-            allRecipes = RecipeLoader.load("src/main/resources/sample_recipes.json");
-            for (int i = 0; i < allRecipes.size(); i++) {
-                Recipe r = allRecipes.get(i);
-                System.out.println("Loaded Recipe " + i + " : " + r.getName() + " / imageUrl=" + r.getImageUrl());
-            }
-
+            allRecipes = RecipeLoader.load(
+                    "src/main/resources/sample_recipes.json"
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // ---- Category Combo ----
+        // ---- Category filter ----
         categoryCombo.getItems().add(null); // = ALL
         categoryCombo.getItems().addAll(CategoryType.values());
         categoryCombo.setPromptText("ALL");
 
-        // ---- Sort Combo ----
+        // ---- Sort options ----
         sortKeyCombo.getItems().addAll(RecipeSorter.SortKey.values());
         sortKeyCombo.setValue(RecipeSorter.SortKey.ID);
 
         sortOrderCombo.getItems().addAll("ASC", "DESC");
         sortOrderCombo.setValue("ASC");
 
-        // ---- Event Listeners ----
-        searchField.textProperty().addListener((obs, oldV, newV) -> updateView());
-        categoryCombo.valueProperty().addListener((obs, oldV, newV) -> updateView());
-        sortKeyCombo.valueProperty().addListener((obs, oldV, newV) -> updateView());
-        sortOrderCombo.valueProperty().addListener((obs, oldV, newV) -> updateView());
+        // ---- Event listeners ----
+        searchField.textProperty().addListener((obs, o, n) -> updateView());
+        categoryCombo.valueProperty().addListener((obs, o, n) -> updateView());
+        sortKeyCombo.valueProperty().addListener((obs, o, n) -> updateView());
+        sortOrderCombo.valueProperty().addListener((obs, o, n) -> updateView());
 
+        // ---- Context menu ----
         MenuItem settingsItem = new MenuItem("⚙ 設定");
         settingsItem.setOnAction(e -> openSettings());
-
-        MenuItem about = new MenuItem("ℹ アプリ情報");
-        menu = new ContextMenu(settingsItem, about);
+        menu = new ContextMenu(settingsItem);
 
         // 初回表示
         updateView();
     }
 
+    /**
+     * 現在の検索・フィルタ・ソート条件をもとに
+     * レシピ一覧表示を更新する。
+     */
     private void updateView() {
+
         List<Recipe> filtered = new ArrayList<>(allRecipes);
 
-
-
-        // ---- Search Filter ----
+        // ---- Search filter ----
         String keyword = searchField.getText();
         if (keyword != null && !keyword.isBlank()) {
             filtered = filtered.stream()
@@ -94,7 +109,7 @@ public class MainViewController {
                     .collect(Collectors.toList());
         }
 
-        // ---- Category Filter ----
+        // ---- Category filter ----
         CategoryType selectedCategory = categoryCombo.getValue();
         if (selectedCategory != null) {
             filtered = filtered.stream()
@@ -103,38 +118,49 @@ public class MainViewController {
         }
 
         // ---- Sort ----
-        boolean asc = sortOrderCombo.getValue().equals("ASC");
-        filtered = RecipeSorter.sort(filtered, sortKeyCombo.getValue(), asc);
+        boolean asc = "ASC".equals(sortOrderCombo.getValue());
+        filtered = RecipeSorter.sort(
+                filtered,
+                sortKeyCombo.getValue(),
+                asc
+        );
 
+        // ---- Render cards ----
         flowPane.getChildren().clear();
 
         for (Recipe r : filtered) {
             RecipeCard card = new RecipeCard(r);
-
-            card.setOnMouseClicked(e -> openDetail(r)); // カードクリックで詳細表示
-
+            card.setOnMouseClicked(e -> openDetail(r));
             flowPane.getChildren().add(card);
         }
-
     }
 
-
+    /**
+     * レシピ詳細画面を開く。
+     */
     private void openDetail(Recipe recipe) {
         try {
-            var url = getClass().getResource("/com/example/recipeapp/view/RecipeDetailView.fxml");
+            var url = getClass().getResource(
+                    "/com/example/recipeapp/view/RecipeDetailView.fxml"
+            );
             if (url == null) {
-                throw new IllegalStateException("RecipeDetailView.fxml not found (resource path is wrong).");
+                throw new IllegalStateException(
+                        "RecipeDetailView.fxml not found."
+                );
             }
 
             FXMLLoader loader = new FXMLLoader(url);
             Parent root = loader.load();
 
-            RecipeDetailController controller = loader.getController();
+            RecipeDetailController controller =
+                    loader.getController();
             controller.setRecipe(recipe);
 
             Stage stage = new Stage();
             stage.setTitle(recipe.getName());
-            stage.setScene(new Scene(root, DETAIL_WIDTH, DETAIL_HEIGHT));
+            stage.setScene(
+                    new Scene(root, DETAIL_WIDTH, DETAIL_HEIGHT)
+            );
 
             controller.setStage(stage);
             stage.show();
@@ -144,6 +170,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * LLM 設定画面をモーダルで開く。
+     */
     private void openSettings() {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -165,13 +194,12 @@ public class MainViewController {
         }
     }
 
-
-
+    /**
+     * メニューボタン押下時にコンテキストメニューを表示する。
+     */
     @FXML
     private void onOpenMenu(ActionEvent event) {
         Button btn = (Button) event.getSource();
         menu.show(btn, Side.BOTTOM, 0, 0);
     }
-
-
 }

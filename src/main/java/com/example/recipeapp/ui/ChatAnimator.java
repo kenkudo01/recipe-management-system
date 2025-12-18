@@ -5,16 +5,28 @@ import javafx.animation.Timeline;
 import javafx.scene.control.TextArea;
 import javafx.util.Duration;
 
+/**
+ * チャット表示用の簡易アニメーションを提供するクラス。
+ *
+ * 「考え中…」の表示や、タイプライター風のテキスト表示を担当し、
+ * チャット UI の演出を分離する目的で利用される。
+ */
 public class ChatAnimator {
 
+    /** 表示対象となる TextArea */
     private final TextArea target;
+
+    /** 「考え中…」アニメーション用の Timeline */
     private Timeline thinkingTimeline;
 
     public ChatAnimator(TextArea target) {
         this.target = target;
     }
 
-    // 🤖 考え中…
+    /**
+     * 「考え中…」アニメーションを開始する。
+     * LLM 応答待ちの間にユーザーへ処理中であることを示す。
+     */
     public void startThinking() {
         String[] frames = {
                 "🤖 考え中",
@@ -33,17 +45,25 @@ public class ChatAnimator {
                     )
             );
         }
+
         thinkingTimeline.setCycleCount(Timeline.INDEFINITE);
         thinkingTimeline.play();
     }
 
+    /**
+     * 「考え中…」アニメーションを停止する。
+     */
     public void stopThinking() {
         if (thinkingTimeline != null) {
             thinkingTimeline.stop();
         }
     }
 
-    // タイプライター表示
+    /**
+     * テキストをタイプライター風に表示する。
+     *
+     * @param text 表示するテキスト
+     */
     public void showTyping(String text) {
         target.clear();
 

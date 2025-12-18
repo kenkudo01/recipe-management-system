@@ -1,6 +1,7 @@
 package com.example.recipeapp.util;
 
 import com.example.recipeapp.model.*;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -10,6 +11,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class RecipeSorterTest {
 
+    @AfterAll
+    static void afterAllTests() {
+        System.out.println("✅ RecipeSorterTest: ALL TESTS PASSED");
+    }
     // ---------- compare() 単体テスト ----------
 
     @Test
@@ -17,13 +22,15 @@ public class RecipeSorterTest {
         Recipe r1 = new Recipe(
                 1, "A", "", 1, 10,
                 List.of(), List.of(), List.of(CategoryType.OTHER),
-                new Nutrition(100, 10, 10, 10)
+                new Nutrition(100, 10, 10, 10),
+                null
         );
 
         Recipe r2 = new Recipe(
                 2, "B", "", 1, 10,
                 List.of(), List.of(), List.of(CategoryType.OTHER),
-                new Nutrition(200, 20, 20, 20)
+                new Nutrition(200, 20, 20, 20),
+                null
         );
 
         assertTrue(RecipeSorter.compare(r1, r2, RecipeSorter.SortKey.ID) < 0);
@@ -35,13 +42,15 @@ public class RecipeSorterTest {
         Recipe curry = new Recipe(
                 1, "カレー", "", 1, 10,
                 List.of(), List.of(), List.of(CategoryType.OTHER),
-                new Nutrition(100, 5, 5, 5)
+                new Nutrition(100, 5, 5, 5),
+                null
         );
 
         Recipe salad = new Recipe(
                 2, "サラダ", "", 1, 10,
                 List.of(), List.of(), List.of(CategoryType.OTHER),
-                new Nutrition(200, 10, 10, 10)
+                new Nutrition(200, 10, 10, 10),
+                null
         );
 
         int cmp = RecipeSorter.compare(curry, salad, RecipeSorter.SortKey.NAME);
@@ -55,13 +64,15 @@ public class RecipeSorterTest {
         Recipe low = new Recipe(
                 1, "Low", "", 1, 10,
                 List.of(), List.of(), List.of(CategoryType.OTHER),
-                new Nutrition(100, 10, 10, 10)
+                new Nutrition(100, 10, 10, 10),
+                null
         );
 
         Recipe high = new Recipe(
                 2, "High", "", 1, 10,
                 List.of(), List.of(), List.of(CategoryType.OTHER),
-                new Nutrition(300, 20, 20, 20)
+                new Nutrition(300, 20, 20, 20),
+                null
         );
 
         assertTrue(RecipeSorter.compare(low, high, RecipeSorter.SortKey.CALORIES) < 0);
@@ -73,13 +84,15 @@ public class RecipeSorterTest {
         Recipe r1 = new Recipe(
                 1, "A", "", 1, 10,
                 List.of(), List.of(), List.of(CategoryType.OTHER),
-                new Nutrition(100, 10, 10, 10)
+                new Nutrition(100, 10, 10, 10),
+                null
         );
 
         Recipe r2 = new Recipe(
                 2, "B", "", 1, 20,
                 List.of(), List.of(), List.of(CategoryType.OTHER),
-                new Nutrition(150, 15, 15, 15)
+                new Nutrition(150, 15, 15, 15),
+                null
         );
 
         assertTrue(RecipeSorter.compare(r1, r2, RecipeSorter.SortKey.COOKING_TIME) < 0);
@@ -98,7 +111,8 @@ public class RecipeSorterTest {
                 3, "カレー", "", 2, 45,
                 new ArrayList<>(), new ArrayList<>(),
                 List.of(CategoryType.OTHER),
-                new Nutrition(600, 25, 20, 80)
+                new Nutrition(600, 25, 20, 80),
+                null
         ));
 
         // ID:1
@@ -106,7 +120,8 @@ public class RecipeSorterTest {
                 1, "サラダ", "", 1, 10,
                 new ArrayList<>(), new ArrayList<>(),
                 List.of(CategoryType.OTHER),
-                new Nutrition(200, 5, 1, 20)
+                new Nutrition(200, 5, 1, 20),
+                null
         ));
 
         // ID:2
@@ -114,7 +129,8 @@ public class RecipeSorterTest {
                 2, "パスタ", "", 1, 20,
                 new ArrayList<>(), new ArrayList<>(),
                 List.of(CategoryType.OTHER),
-                new Nutrition(700, 30, 15, 90)
+                new Nutrition(700, 30, 15, 90),
+                null
         ));
 
         return list;

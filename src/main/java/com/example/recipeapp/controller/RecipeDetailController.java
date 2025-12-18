@@ -1,22 +1,25 @@
 package com.example.recipeapp.controller;
 
 import com.example.recipeapp.llm.*;
-import com.example.recipeapp.model.Ingredient;
 import com.example.recipeapp.model.Recipe;
 import com.example.recipeapp.ui.ChatAnimator;
-import javafx.application.Platform;
-import javafx.collections.*;
+
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
-import static com.example.recipeapp.llm.ValidationResult.SERVER_UNAVAILABLE;
-
+/**
+ * レシピ詳細画面のコントローラ。
+ *
+ * レシピ情報の表示に加え、LLM を用いた補助情報
+ *（副菜提案・不足材料判断など）を提供する。
+ */
 public class RecipeDetailController {
+
+    // ===== FXML components =====
 
     @FXML private Label titleLabel;
     @FXML private Label descriptionLabel;
@@ -31,13 +34,22 @@ public class RecipeDetailController {
 
     @FXML private TextArea llmResultArea;
 
+    // ===== State =====
+
     private Recipe recipe;
     private ChatAnimator chatAnimator;
     private boolean llmAvailable = true;
     private Stage stage;
 
+    /**
+     * FXML 読み込み後に呼ばれる初期化処理。
+     *
+     * LLM の利用可否を確認し、
+     * 利用不可の場合はその旨を画面に表示する。
+     */
     @FXML
-    public void initialize(){
+    public void initialize() {
+
         chatAnimator = new ChatAnimator(llmResultArea);
 
         ValidationResult result = LlmValidator.validate();
@@ -50,22 +62,30 @@ public class RecipeDetailController {
                         "⚠ 指定されたAIモデルが見つかりません。\n設定を確認してください。";
                 case SERVER_UNAVAILABLE ->
                         "⚠ Ollamaに接続できません。\n起動しているか確認してください。";
-                default -> "⚠ AIが利用できません。";
+                default ->
+                        "⚠ AIが利用できません。";
             };
 
             llmResultArea.setText(message);
         }
     }
 
+    /**
+     * 表示対象のレシピを設定し、画面に反映する。
+     */
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+
         titleLabel.setText(recipe.getName());
         descriptionLabel.setText(recipe.getDescription());
 
+        // ---- Image ----
         if (recipe.getImageUrl() != null) {
             try {
                 Image img = new Image(
-                        getClass().getResourceAsStream("/" + recipe.getImageUrl())
+                        getClass().getResourceAsStream(
+                                "/" + recipe.getImageUrl()
+                        )
                 );
                 imageView.setImage(img);
             } catch (Exception e) {
@@ -75,68 +95,76 @@ public class RecipeDetailController {
             imageView.setImage(null);
         }
 
+        // ---- Ingredients ----
         ingredientList.getItems().setAll(
                 recipe.getIngredients().stream()
-                        .map(i -> i.getName() + " : " + i.getAmount().getRaw())
+                        .map(i ->
+                                i.getName() + " : " +
+                                        i.getAmount().getRaw()
+                        )
                         .toList()
         );
 
+        // ---- Steps ----
         stepList.getItems().setAll(recipe.getSteps());
 
-        // 栄養情報
-        calorieLabel.setText("カロリー: " + recipe.getNutrition().getCalories() + " kcal");
-        proteinLabel.setText("たんぱく質: " + recipe.getNutrition().getProtein() + " g");
-        fatLabel.setText("脂質: " + recipe.getNutrition().getFat() + " g");
-        carbLabel.setText("炭水化物: " + recipe.getNutrition().getCarbs() + " g");
+        // ---- Nutrition ----
+        calorieLabel.setText(
+                "カロリー: " +
+                        recipe.getNutrition().getCalories() + " kcal"
+        );
+        proteinLabel.setText(
+                "たんぱく質: " +
+                        recipe.getNutrition().getProtein() + " g"
+        );
+        fatLabel.setText(
+                "脂質: " +
+                        recipe.getNutrition().getFat() + " g"
+        );
+        carbLabel.setText(
+                "炭水化物: " +
+                        recipe.getNutrition().getCarbs() + " g"
+        );
     }
 
-
+    /**
+     * LLM に問い合わせを行う共通処理。
+     *
+     * 通信処理は時間がかかるため、
+     * JavaFX UI スレッドをブロックしないよう
+     * Task を用いてバックグラウンドで実行する。
+     */
     private void askLLM(PromptType type) {
 
-        // ===============================
-        // LLM呼び出しは時間がかかるため、
-        // JavaFXのUIスレッドをブロックしないよう
-        // Task（バックグラウンド処理）で実行する
-        // ===============================
         Task<String> task = new Task<>() {
 
-            // バックグラウンドスレッドで実行される処理
-            // （ここではUI操作をしてはいけない）
+            /**
+             * バックグラウンドスレッドで実行される処理。
+             * （UI 操作は禁止）
+             */
             @Override
             protected String call() {
                 return LlmService.ask(type, recipe);
             }
         };
 
-        // ===============================
-        // Task が正常終了したときに呼ばれる
-        // この処理は JavaFX Application Thread 上で実行される
-        // ===============================
+        /**
+         * Task 正常終了時の処理。
+         * JavaFX Application Thread 上で実行される。
+         */
         task.setOnSucceeded(e -> {
-
-            // 「考え中…」アニメーションを停止
             chatAnimator.stopThinking();
-
-            // LLMの回答を1文字ずつ表示するアニメーションを開始
             chatAnimator.showTyping(task.getValue());
         });
 
-        // ===============================
-        // LLM処理開始前に「考え中…」表示を開始
-        // （UIスレッド上で安全に実行される）
-        // ===============================
+        // 処理開始前に「考え中…」アニメーションを表示
         chatAnimator.startThinking();
 
-        // ===============================
-        // Taskを別スレッドで実行
-        // （new Thread(...) しないと処理が始まらない）
-        // ===============================
+        // Task を別スレッドで実行
         new Thread(task).start();
     }
 
-
-
-
+    // ===== Button handlers =====
 
     @FXML
     private void onAskSideDish() {
@@ -158,12 +186,16 @@ public class RecipeDetailController {
         askLLM(PromptType.PITFALL);
     }
 
-
-
+    /**
+     * 親ステージを設定する（戻るボタン用）。
+     */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /**
+     * 戻るボタン押下時に画面を閉じる。
+     */
     @FXML
     private void onBack() {
         stage.close();
