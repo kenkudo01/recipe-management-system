@@ -6,13 +6,17 @@ import com.example.recipeapp.model.Recipe;
 import com.example.recipeapp.util.KnapsackSolver;
 import com.example.recipeapp.util.RecipeSorter;
 
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Scanner;
 
 public class MenuController {
 
     private final List<Recipe> recipes;
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner =  new Scanner(
+            new InputStreamReader(System.in, StandardCharsets.UTF_8)
+    );
 
     public MenuController(List<Recipe> recipes) {
         this.recipes = recipes;
