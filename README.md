@@ -60,17 +60,6 @@ Ollama はローカル環境で動作する LLM API として利用している�
 
 ---
 
-## 機能一覧（Features）
-- JSON 形式でのレシピデータ読み込み（Gson を使用）
-- レシピモデルの設計  
-  （Recipe / Ingredient / IngredientAmount / Nutrition / CategoryType）
-- 挿入ソート（Insertion Sort）による独自ソート機能  
-  - ソートキー：ID / 名前 / カロリー / 調理時間
-- 2 次元 0-1 ナップサック問題による最適レシピ選択  
-  - 制約条件：総カロリー、総調理時間  
-  - 最大化対象：タンパク質量
-
----
 
 ## ディレクトリ構成（Directory Structure）
 
@@ -140,6 +129,7 @@ LLM 利用不可時のフォールバックにも柔軟に対応できる構造�
 - コード生成およびバグ修正のサポート  
 - READMEの文章生成  
 - Git 運用やブランチ戦略の最適化
+
 
 
 
