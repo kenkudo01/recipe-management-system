@@ -35,6 +35,9 @@ UTF-8 環境（IntelliJ、または UTF-8 設定済みターミナル）での
 ---
 ## 使用技術（Tech Stack）
 
+## エディタ
+- intellJ
+
 ### 言語・実行環境
 - Java 17  
 - JavaFX 17（GUI 部分のみ / Part 3）
